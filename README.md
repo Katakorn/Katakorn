@@ -8,7 +8,7 @@ Building high-performance FiveM resources, backend systems and modern user inter
 
 <br>
 
-![Profile Views](https://komarev.com/ghpvc/?username=Katakorn\&style=for-the-badge)
+![Profile Views]([https://komarev.com/ghpvc/?username=Katakorn\&style=for-the-badge](https://portfolio.nomonx5.workers.dev/))
 
 </div>
 
