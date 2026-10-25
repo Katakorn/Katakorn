@@ -40,14 +40,9 @@
 
 ### <img src="https://api.iconify.design/tabler/chart-bar.svg?color=%2358a6ff" width="22" align="top" /> Stats
 
-<div align="center">
+<img src="assets/stats.svg" width="100%" alt="GitHub stats" />
 
-<img height="165" src="https://github-readme-stats.vercel.app/api?username=Katakorn&show_icons=true&theme=tokyonight&hide_border=true&include_all_commits=true&count_private=true&bg_color=0d1117" />
-<img height="165" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Katakorn&layout=compact&theme=tokyonight&hide_border=true&bg_color=0d1117" />
-
-<img src="https://streak-stats.demolab.com?user=Katakorn&theme=tokyonight&hide_border=true&background=0d1117" />
-
-</div>
+<img src="assets/languages.svg" width="100%" alt="Most used languages" />
 
 ---
 
