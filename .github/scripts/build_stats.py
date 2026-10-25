@@ -20,25 +20,8 @@ PANEL = "#161b22"
 BORDER = "#30363d"
 FG = "#e6edf3"
 MUTED = "#8b949e"
-SANS = "'Segoe UI',Ubuntu,'Helvetica Neue',Arial,sans-serif"
+MONO = "'JetBrains Mono','Cascadia Code',Consolas,Menlo,monospace"
 REDUCED = "@media (prefers-reduced-motion: reduce){*{animation:none!important}}"
-
-_S = 'fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"'
-ICONS = {
-    "activity": f'<path {_S} d="M3 12h4l3 8l4-16l3 8h4"/>',
-    "commit": f'<path {_S} d="M9 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0m3-9v6m0 6v6"/>',
-    "pr": f'<g {_S}><path d="M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0M4 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0m12 12a2 2 0 1 0 4 0a2 2 0 1 0-4 0M6 8v8"/><path d="M11 6h5a2 2 0 0 1 2 2v8"/><path d="m14 9l-3-3l3-3"/></g>',
-    "issue": f'<g {_S}><path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/></g>',
-    "review": f'<g {_S}><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0-4 0"/><path d="M11.102 17.957Q6.297 17.495 3 12q3.6-6 9-6t9 6a20 20 0 0 1-.663 1.032M15 19l2 2l4-4"/></g>',
-    "repo": f'<g {_S}><path d="M19 4v16H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M19 16H7a2 2 0 0 0-2 2M9 8h6"/></g>',
-    "star": f'<path {_S} d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/>',
-    "users": f'<path {_S} d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2m1-17.87a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"/>',
-    "flame": f'<path {_S} d="M12 10.941c2.333-3.308.167-7.823-1-8.941c0 3.395-2.235 5.299-3.667 6.706C5.903 10.114 5 12 5 14.294C5 17.998 8.134 21 12 21s7-3.002 7-6.706c0-1.712-1.232-4.403-2.333-5.588c-2.084 3.353-3.257 3.353-4.667 2.235"/>',
-    "trophy": f'<path {_S} d="M8 21h8m-4-4v4M7 4h10m0 0v8a5 5 0 0 1-10 0V4M3 9a2 2 0 1 0 4 0a2 2 0 1 0-4 0m14 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/>',
-    "calendar": f'<g {_S}><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm12-4v4M8 3v4m-4 4h16"/><path d="M8 15h2v2H8z"/></g>',
-    "code": f'<path {_S} d="m7 8l-4 4l4 4m10-8l4 4l-4 4M14 4l-4 16"/>',
-}
-
 
 # ------------------------------------------------------------------ fetching
 def gql(token, query, variables=None):
@@ -173,12 +156,6 @@ def esc(s):
     return html.escape(str(s), quote=False)
 
 
-def icon(name, x, y, color, size=20, cls=""):
-    c = f' class="{cls}"' if cls else ""
-    return (f'<g transform="translate({x},{y})"><g{c} style="color:{color}">'
-            f'<svg width="{size}" height="{size}" viewBox="0 0 24 24">{ICONS[name]}</svg></g></g>')
-
-
 def fmt_date(iso):
     d = dt.date.fromisoformat(iso)
     return f"{d.strftime('%b')} {d.day}, {d.year}"
@@ -199,15 +176,15 @@ class Odo:
         self.n = 0
         self.css = []
 
-    def __call__(self, value, cx, y, size, color, delay):
+    def __call__(self, value, x, y, size, color, delay, anchor="start", weight=700):
         text = f"{value:,}"
         dw, cw, lh = size * 0.6, size * 0.32, size * 1.25
         width = sum(cw if ch == "," else dw for ch in text)
-        x = cx - width / 2
+        x = x - width / 2 if anchor == "middle" else x - width if anchor == "end" else x
         out = []
         for k, ch in enumerate(text):
             if ch == ",":
-                out.append(f'<text x="{x:.1f}" y="{y}" fill="{color}" font-size="{size}" font-weight="700">,</text>')
+                out.append(f'<text x="{x:.1f}" y="{y}" fill="{color}" font-size="{size}" font-weight="{weight}">,</text>')
                 x += cw
                 continue
             self.n += 1
@@ -216,92 +193,151 @@ class Odo:
                             f".o{i}{{animation:o{i} 1.6s cubic-bezier(.2,.8,.2,1) {delay + k * 0.08:.2f}s both}}")
             stack = "".join(f'<text x="{x:.1f}" y="{y + j * lh:.1f}">{j % 10}</text>' for j in range(20))
             out.append(f'<clipPath id="c{i}"><rect x="{x - 1:.1f}" y="{y - size:.1f}" width="{dw + 2:.1f}" height="{lh:.1f}"/></clipPath>'
-                       f'<g clip-path="url(#c{i})"><g class="o{i}" fill="{color}" font-size="{size}" font-weight="700">{stack}</g></g>')
+                       f'<g clip-path="url(#c{i})"><g class="o{i}" fill="{color}" font-size="{size}" font-weight="{weight}">{stack}</g></g>')
             x += dw
         return "".join(out)
 
 
+ACCENT = "#58a6ff"
+ACCENT2 = "#a371f7"
+LINE = "#21262d"
+DIM = "#6e7681"
+PAD = 24
+
+
+def frame(W, H, title, meta):
+    """Shared console frame: one hairline panel with a title strip."""
+    return (f'<rect x=".5" y=".5" width="{W - 1}" height="{H - 1}" rx="6" fill="{BG}" stroke="{BORDER}"/>'
+            f'<text x="{PAD}" y="25" class="cap"><tspan fill="{ACCENT}">●</tspan>  {esc(title)}</text>'
+            f'<text x="{W - PAD}" y="25" class="cap" text-anchor="end">{esc(meta)}</text>'
+            f'<line x1="0" x2="{W}" y1="40.5" y2="40.5" stroke="{LINE}"/>')
+
+
+def weekly(days, weeks=52):
+    if not days:
+        return [0] * weeks, []
+    last = dt.date.fromisoformat(max(days))
+    start = last - dt.timedelta(days=weeks * 7 - 1)
+    sums, labels = [0] * weeks, []
+    for iso, n in days.items():
+        d = dt.date.fromisoformat(iso)
+        if d >= start:
+            sums[(d - start).days // 7] += n
+    for w in range(weeks):
+        d0 = start + dt.timedelta(days=w * 7)
+        if (d0 + dt.timedelta(days=6)).month != d0.month or w == 0:
+            m = (d0 + dt.timedelta(days=6))
+            labels.append((w, m.strftime("%b").upper()))
+    return sums, labels
+
+
 def stats_svg(s, st):
-    W = 840
+    W, H = 840, 400
     odo = Odo()
-    tiles = [
-        ("activity", "#58a6ff", "Contributions", s["contributions"]),
-        ("commit", "#a371f7", "Commits", s["commits"]),
-        ("pr", "#3fb950", "Pull Requests", s["prs"]),
-        ("issue", "#d29922", "Issues", s["issues"]),
-        ("review", "#39c5cf", "Code Reviews", s["reviews"]),
-        ("repo", "#f778ba", "Repositories", s["repos"]),
-        ("star", "#e3b341", "Stars Earned", s["stars"]),
-        ("users", "#f85149", "Followers", s["followers"]),
-    ]
-    TW, TH, GAP = (W - 3 * 16) / 4, 92, 16
-    out = []
-    for i, (ic, color, label, val) in enumerate(tiles):
-        r, c = divmod(i, 4)
-        x, y = c * (TW + GAP), 2 + r * (TH + GAP)
-        d = 0.1 + i * 0.08
-        out.append(
-            f'<g transform="translate({x:.1f},{y})"><g class="tile" style="animation-delay:{d:.2f}s">'
-            f'<rect x="1" y="1" width="{TW - 2:.1f}" height="{TH - 2}" rx="12" fill="{PANEL}" stroke="{BORDER}"/>'
-            f'<rect x="1" y="1" width="4" height="{TH - 2}" rx="2" fill="{color}"/>'
-            f'{icon(ic, 18, 16, color, 18)}'
-            f'<text x="44" y="30" class="lbl">{esc(label)}</text>'
-            f'{odo(val, TW / 2, 72, 28, FG, d + 0.2)}'
-            f'</g></g>')
+    out = [frame(W, H, f"{s['login'].upper()} / ACTIVITY",
+                 f"since {fmt_date(s['since'])} · synced {dt.date.today().isoformat()}")]
 
-    y0 = 2 + 2 * (TH + GAP)
-    SH = 150
-    cw = (W - 2 * 16) / 3
-    ring_r, circ = 44, 2 * 3.14159 * 44
-    ring_css = ""
-    pct = min(1.0, st["current"] / max(1, st["longest"]))
-    cols = [
-        ("trophy", "#e3b341", "Longest Streak", st["longest"], fmt_range(st["long_range"])),
-        (None, "#a371f7", "Current Streak", st["current"], fmt_range(st["cur_range"])),
-        ("calendar", "#3fb950", "Active Days", st["active"],
-         f"best day: {st['best'][1]} on {fmt_range((st['best'][0], st['best'][0]))}" if st["best"][0] else "—"),
-    ]
-    for i, (ic, color, label, val, sub) in enumerate(cols):
-        x = i * (cw + 16)
-        d = 0.8 + i * 0.12
-        body = [f'<rect x="1" y="1" width="{cw - 2:.1f}" height="{SH - 2}" rx="12" fill="{PANEL}" stroke="{BORDER}"/>']
-        if ic is None:
-            cx, cy = cw / 2, 62
-            body.append(f'<circle cx="{cx:.1f}" cy="{cy}" r="{ring_r}" fill="none" stroke="{BORDER}" stroke-width="6"/>')
-            body.append(f'<circle class="ring" cx="{cx:.1f}" cy="{cy}" r="{ring_r}" fill="none" stroke="url(#ringg)" '
-                        f'stroke-width="6" stroke-linecap="round" transform="rotate(-90 {cx:.1f} {cy})" '
-                        f'stroke-dasharray="{circ:.1f}"/>')
-            ring_css = (f".ring{{stroke-dashoffset:{circ:.1f};animation:ring 1.8s cubic-bezier(.2,.8,.2,1) 1.1s forwards}}"
-                        f"@keyframes ring{{to{{stroke-dashoffset:{circ * (1 - max(pct, .04)):.1f}}}}}")
-            body.append(icon("flame", cx - 11, 6, "#f78166", 22, "flame"))
-            body.append(odo(val, cx, cy + 11, 30, FG, d + 0.2))
-            body.append(f'<text x="{cx:.1f}" y="128" class="lbl" text-anchor="middle" fill="{color}">{label}</text>')
-            body.append(f'<text x="{cx:.1f}" y="144" class="sub" text-anchor="middle">{esc(sub)}</text>')
-        else:
-            body.append(icon(ic, cw / 2 - 12, 22, color, 24))
-            body.append(odo(val, cw / 2, 90, 34, FG, d + 0.2))
-            body.append(f'<text x="{cw / 2:.1f}" y="118" class="lbl" text-anchor="middle">{label}</text>')
-            body.append(f'<text x="{cw / 2:.1f}" y="138" class="sub" text-anchor="middle">{esc(sub)}</text>')
-        out.append(f'<g transform="translate({x:.1f},{y0})"><g class="tile" style="animation-delay:{d:.2f}s">'
-                   f'{"".join(body)}</g></g>')
+    # hero: the one number that matters
+    out.append(odo(s["contributions"], PAD - 2, 122, 64, FG, 0.2, weight=800))
+    out.append(f'<text x="{PAD}" y="150" class="lbl">contributions</text>')
+    out.append(f'<text x="{PAD}" y="170" class="sub">public + private, all time</text>')
 
-    H = y0 + SH + 22
-    out.append(f'<text x="{W / 2}" y="{H - 4}" class="sub" text-anchor="middle">'
-               f'since {fmt_date(s["since"])} · public + private · updated {dt.date.today().isoformat()}</text>')
+    # weekly activity line, last 52 weeks
+    sums, labels = weekly(s["days"])
+    cx0, cx1, cy0, cy1 = 300, W - PAD, 78, 168
+    top = max(max(sums), 1)
+    step = (cx1 - cx0) / (len(sums) - 1)
+    pts = [(cx0 + i * step, cy1 - (v / top) * (cy1 - cy0)) for i, v in enumerate(sums)]
+    line = "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y in pts)
+    area = f"{line} L{cx1:.1f},{cy1} L{cx0:.1f},{cy1} Z"
+    peak = max(range(len(sums)), key=lambda i: sums[i])
+    px, py = pts[peak]
+    out.append(f'<line x1="{cx0}" x2="{cx1}" y1="{cy1 + .5}" y2="{cy1 + .5}" stroke="{LINE}"/>')
+    for w, lab in labels:
+        x = cx0 + w * step
+        out.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{cy1 + 1}" y2="{cy1 + 5}" stroke="{BORDER}"/>'
+                   f'<text x="{x:.1f}" y="{cy1 + 18}" class="tick">{lab}</text>')
+    out.append(f'<path class="area" d="{area}" fill="url(#ag)"/>')
+    out.append(f'<path class="line" d="{line}" fill="none" stroke="{ACCENT}" stroke-width="1.75" '
+               f'stroke-linejoin="round" pathLength="1"/>')
+    lx = min(max(px, cx0 + 40), cx1 - 40)
+    out.append(f'<g class="peak"><circle cx="{px:.1f}" cy="{py:.1f}" r="3.5" fill="{BG}" stroke="{ACCENT}" stroke-width="1.75"/>'
+               f'<text x="{lx:.1f}" y="{py - 9:.1f}" class="tick" text-anchor="middle" style="fill:{FG}">peak {sums[peak]}/wk</text></g>')
+    out.append(f'<text x="{cx0}" y="56" class="tick">WEEKLY · LAST 12 MONTHS</text>')
+
+    # secondary metrics: one ruled row, no boxes
+    y0 = 206
+    out.append(f'<line x1="0" x2="{W}" y1="{y0 + .5}" y2="{y0 + .5}" stroke="{LINE}"/>')
+    metrics = [("commits", s["commits"]), ("pull requests", s["prs"]), ("issues", s["issues"]),
+               ("reviews", s["reviews"]), ("repositories", s["repos"]), ("stars", s["stars"]),
+               ("followers", s["followers"])]
+    cw = (W - 2 * PAD) / len(metrics)
+    for i, (lab, val) in enumerate(metrics):
+        x = PAD + i * cw
+        if i:
+            out.append(f'<line x1="{x - 12:.1f}" x2="{x - 12:.1f}" y1="{y0 + 18}" y2="{y0 + 70}" stroke="{LINE}"/>')
+        dim = val == 0
+        out.append(f'<g class="up" style="animation-delay:{0.5 + i * 0.06:.2f}s">'
+                   f'<text x="{x:.1f}" y="{y0 + 44}" class="val"{" fill=%r" % DIM if dim else ""}>{val:,}</text>'
+                   f'<text x="{x:.1f}" y="{y0 + 64}" class="cap">{lab.upper()}</text></g>')
+
+    # streak: last 35 days as a strip, current run outlined
+    y1 = y0 + 88
+    out.append(f'<line x1="0" x2="{W}" y1="{y1 + .5}" y2="{y1 + .5}" stroke="{LINE}"/>')
+    out.append(f'<text x="{PAD}" y="{y1 + 46}" class="big">{st["current"]}<tspan class="unit"> day streak</tspan></text>')
+    out.append(f'<text x="{PAD}" y="{y1 + 68}" class="sub">current · {esc(fmt_range(st["cur_range"]))}</text>')
+    last = dt.date.fromisoformat(max(s["days"])) if s["days"] else dt.date.today()
+    n, sq, gap = 28, 9, 3
+    sx = 222
+    cur = set()
+    if st["cur_range"]:
+        a, b = (dt.date.fromisoformat(v) for v in st["cur_range"])
+        cur = {(a + dt.timedelta(days=k)).isoformat() for k in range((b - a).days + 1)}
+    vals = [s["days"].get((last - dt.timedelta(days=n - 1 - k)).isoformat(), 0) for k in range(n)]
+    vmax = max(max(vals), 1)
+    for k, v in enumerate(vals):
+        iso = (last - dt.timedelta(days=n - 1 - k)).isoformat()
+        x = sx + k * (sq + gap)
+        op = 0.12 if v == 0 else 0.35 + 0.65 * v / vmax
+        col = ACCENT2 if iso in cur else ACCENT
+        stroke = f' stroke="{ACCENT2}" stroke-width="1"' if iso in cur else ""
+        out.append(f'<rect class="day" x="{x}" y="{y1 + 28}" width="{sq}" height="{sq}" rx="2" fill="{col if v else FG}" '
+                   f'fill-opacity="{op:.2f}"{stroke} style="animation-delay:{0.9 + k * 0.025:.3f}s"/>')
+    out.append(f'<text x="{sx}" y="{y1 + 62}" class="tick">LAST 4 WEEKS</text>')
+    out.append(f'<text x="{sx + n * (sq + gap) - gap}" y="{y1 + 62}" class="tick" text-anchor="end">TODAY</text>')
+    rx = W - PAD
+    best = st["best"]
+    rows = [("longest", f'{st["longest"]}d', fmt_range(st["long_range"])),
+            ("active", f'{st["active"]}d', ""),
+            ("best day", f'{best[1]}', fmt_range((best[0], best[0])) if best[0] else "")]
+    for i, (k, v, extra) in enumerate(rows):
+        y = y1 + 30 + i * 18
+        out.append(f'<text x="{rx - 236}" y="{y}" class="cap">{k.upper()}</text>'
+                   f'<text x="{rx}" y="{y}" class="kv" text-anchor="end">{esc(v)}'
+                   f'{f"<tspan fill={chr(34)}{DIM}{chr(34)}>  {esc(extra)}</tspan>" if extra else ""}</text>')
+
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">
 <style>
-text{{font-family:{SANS};font-variant-numeric:tabular-nums}}
-.lbl{{font-size:13px;font-weight:600;fill:{MUTED}}}
-.sub{{font-size:11.5px;fill:#6e7681}}
-.tile{{opacity:0;animation:in .6s cubic-bezier(.2,.8,.2,1) both}}
-@keyframes in{{from{{opacity:0;transform:translateY(14px)}}to{{opacity:1;transform:none}}}}
-{ring_css}
-.flame{{transform-box:fill-box;transform-origin:50% 100%;animation:flk 1.4s ease-in-out infinite}}
-@keyframes flk{{0%,100%{{transform:scale(1)}}50%{{transform:scale(1.12,1.2)}}}}
+text{{font-family:{MONO};font-variant-numeric:tabular-nums;fill:{FG}}}
+.cap{{font-size:10.5px;letter-spacing:.08em;fill:{DIM}}}
+.tick{{font-size:10px;letter-spacing:.06em;fill:{DIM}}}
+.lbl{{font-size:14px;fill:{FG}}}
+.sub{{font-size:11.5px;fill:{DIM}}}
+.val{{font-size:22px;font-weight:700}}
+.big{{font-size:30px;font-weight:800}}
+.unit{{font-size:13px;font-weight:400;fill:{MUTED}}}
+.kv{{font-size:12.5px;font-weight:600}}
+.line{{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.2s cubic-bezier(.4,0,.2,1) .3s forwards}}
+@keyframes draw{{to{{stroke-dashoffset:0}}}}
+.area,.peak{{opacity:0;animation:fade 1s ease-out 1.8s forwards}}
+@keyframes fade{{to{{opacity:1}}}}
+.up{{opacity:0;animation:up .6s cubic-bezier(.2,.8,.2,1) both}}
+@keyframes up{{from{{opacity:0;transform:translateY(8px)}}to{{opacity:1;transform:none}}}}
+.day{{opacity:0;animation:fade .3s ease-out both}}
 {"".join(odo.css)}
 {REDUCED}
 </style>
-<defs><linearGradient id="ringg" x1="0" x2="1"><stop offset="0" stop-color="#1f6feb"/><stop offset="1" stop-color="#a371f7"/></linearGradient></defs>
+<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".22"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></linearGradient></defs>
 {"".join(out)}
 </svg>
 '''
@@ -310,51 +346,55 @@ text{{font-family:{SANS};font-variant-numeric:tabular-nums}}
 def langs_svg(s, exclude):
     langs = {k: v for k, v in s["langs"].items() if k.lower() not in exclude}
     total = sum(v["size"] for v in langs.values()) or 1
-    top = sorted(langs.items(), key=lambda kv: -kv[1]["size"])[:10]
-    W = 840
-    rows = (len(top) + 1) // 2
-    H = 92 + rows * 34 + 10
-    out = [f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="12" fill="{PANEL}" stroke="{BORDER}"/>',
-           icon("code", 22, 20, "#58a6ff", 20),
-           f'<text x="52" y="36" class="h">Most Used Languages</text>',
-           f'<text x="{W - 22}" y="36" class="sub" text-anchor="end">{len(langs)} languages · public + private repos</text>']
-    bx, bw, by = 22, W - 44, 56
-    segs, x = [], bx
-    for name, v in top:
-        w = bw * v["size"] / total
-        segs.append(f'<rect x="{x:.2f}" y="{by}" width="{max(w, 0.5):.2f}" height="12" fill="{v["color"]}"/>')
-        x += w
-    out.append(f'<clipPath id="barclip"><rect x="{bx}" y="{by}" width="0" height="12" rx="6">'
-               f'<animate attributeName="width" from="0" to="{bw}" dur="1.4s" begin="0.2s" fill="freeze" '
-               f'calcMode="spline" keySplines=".2 .8 .2 1" keyTimes="0;1"/></rect></clipPath>'
-               f'<rect x="{bx}" y="{by}" width="{bw}" height="12" rx="6" fill="{BORDER}"/>'
-               f'<g clip-path="url(#barclip)">{"".join(segs)}</g>')
-    colw = (W - 44 - 40) / 2
-    for i, (name, v) in enumerate(top):
-        r, c = i % rows, i // rows
-        x, y = 22 + c * (colw + 40), 100 + r * 34
-        p = 100 * v["size"] / total
-        mw = (colw - 180) * v["size"] / top[0][1]["size"]
-        d = 0.5 + i * 0.07
-        out.append(
-            f'<g transform="translate({x:.1f},{y})"><g class="row" style="animation-delay:{d:.2f}s">'
-            f'<circle cx="6" cy="0" r="6" fill="{v["color"]}"/>'
-            f'<text x="20" y="5" class="n">{esc(name)}</text>'
-            f'<rect x="130" y="-4" width="{colw - 180:.1f}" height="8" rx="4" fill="{BORDER}"/>'
-            f'<rect class="mini" x="130" y="-4" width="{max(mw, 4):.1f}" height="8" rx="4" fill="{v["color"]}" style="animation-delay:{d + 0.2:.2f}s"/>'
-            f'<text x="{colw:.1f}" y="5" class="p" text-anchor="end">{p:.1f}%</text>'
-            f'</g></g>')
+    ranked = sorted(langs.items(), key=lambda kv: -kv[1]["size"])
+    top, rest = ranked[:6], ranked[6:]
+    rows = [(n, v["size"], v["color"]) for n, v in top]
+    if rest:
+        rows.append((f"+{len(rest)} other", sum(v["size"] for _, v in rest), DIM))
+
+    W, RH, Y0 = 840, 30, 76
+    H = Y0 + len(rows) * RH + 40
+    out = [frame(W, H, "RESMON / LANGUAGES", f"{len(langs)} languages · share of code bytes")]
+    TX, TN, TW, TG = 300, 40, 8, 2.5
+    out.append(f'<text x="{PAD}" y="62" class="cap">RESOURCE</text>'
+               f'<text x="250" y="62" class="cap" text-anchor="end">SHARE</text>'
+               f'<text x="{TX}" y="62" class="cap">USAGE</text>'
+               f'<text x="{W - PAD}" y="62" class="cap" text-anchor="end">KB</text>')
+    for r, (name, size, color) in enumerate(rows):
+        y = Y0 + r * RH
+        p = 100 * size / total
+        lit = max(1, round(p / 100 * TN)) if size else 0
+        lead = r == 0
+        if r % 2 == 0:
+            out.append(f'<rect x="1" y="{y}" width="{W - 2}" height="{RH}" fill="{PANEL}" fill-opacity=".55"/>')
+        cy = y + RH / 2
+        out.append(f'<g class="up" style="animation-delay:{0.15 + r * 0.07:.2f}s">'
+                   f'<rect x="{PAD}" y="{cy - 4}" width="8" height="8" rx="1.5" fill="{color}"/>'
+                   f'<text x="{PAD + 18}" y="{cy + 4.5}" class="{"name lead" if lead else "name"}">{esc(name.lower())}</text>'
+                   f'<text x="250" y="{cy + 4.5}" class="pct" text-anchor="end">{p:.1f}%</text>'
+                   f'<text x="{W - PAD}" y="{cy + 4.5}" class="kb" text-anchor="end">{size / 1024:,.0f}</text></g>')
+        for t in range(TN):
+            x = TX + t * (TW + TG)
+            on = t < lit
+            fill = (ACCENT if not lead else FG) if on else LINE
+            cls = ' class="tk"' if on else ""
+            style = f' style="animation-delay:{0.4 + r * 0.07 + t * 0.018:.3f}s"' if on else ""
+            out.append(f'<rect{cls} x="{x:.1f}" y="{cy - 6}" width="{TW}" height="12" rx="1" fill="{fill}"{style}/>')
+    out.append(f'<text x="{PAD}" y="{H - 14}" class="sub">non-fork repos I own or contribute to · public + private</text>')
+
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">
 <style>
-text{{font-family:{SANS};font-variant-numeric:tabular-nums}}
-.h{{font-size:16px;font-weight:600;fill:{FG}}}
-.sub{{font-size:11.5px;fill:#6e7681}}
-.n{{font-size:13.5px;font-weight:600;fill:{FG}}}
-.p{{font-size:13px;fill:{MUTED}}}
-.row{{opacity:0;animation:in .5s ease-out both}}
-@keyframes in{{from{{opacity:0;transform:translateX(-12px)}}to{{opacity:1;transform:none}}}}
-.mini{{transform-box:fill-box;transform-origin:left center;animation:grow 1.1s cubic-bezier(.2,.8,.2,1) both}}
-@keyframes grow{{from{{transform:scaleX(0)}}to{{transform:scaleX(1)}}}}
+text{{font-family:{MONO};font-variant-numeric:tabular-nums;fill:{FG}}}
+.cap{{font-size:10.5px;letter-spacing:.08em;fill:{DIM}}}
+.sub{{font-size:11px;fill:{DIM}}}
+.name{{font-size:13px}}
+.lead{{font-weight:700}}
+.pct{{font-size:13px;font-weight:600}}
+.kb{{font-size:12px;fill:{DIM}}}
+.up{{opacity:0;animation:up .5s cubic-bezier(.2,.8,.2,1) both}}
+@keyframes up{{from{{opacity:0;transform:translateX(-8px)}}to{{opacity:1;transform:none}}}}
+.tk{{opacity:0;animation:on .25s ease-out both}}
+@keyframes on{{from{{opacity:0}}to{{opacity:1}}}}
 {REDUCED}
 </style>
 {"".join(out)}
