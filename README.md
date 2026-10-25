@@ -20,24 +20,9 @@
 
 ### <img src="https://api.iconify.design/tabler/terminal-2.svg?color=%2358a6ff" width="22" align="top" /> `whoami`
 
-```lua
----@class Developer
-local Katakorn = {
-    role      = "FiveM / Lua / Full Stack Developer",
-    framework = { "ESX", "ox_lib", "oxmysql" },
-    stack     = { "Lua", "JavaScript", "Svelte", "HTML/CSS", "MySQL", "Node.js" },
-    focus     = { "FiveM Resources", "Backend Systems", "NUI", "Database Design", "Optimization" },
-    motto     = "Clean code. High performance. Secure systems.",
-}
-```
+<img src="assets/whoami.svg" width="100%" alt="whoami.lua" />
 
-| | What I do |
-|:-:|:--|
-| <img src="https://api.iconify.design/tabler/device-gamepad-2.svg?color=%2358a6ff" width="22" /> | **FiveM Resources** — client / server / shared, modular Lua architecture |
-| <img src="https://api.iconify.design/tabler/layout-dashboard.svg?color=%23a371f7" width="22" /> | **NUI / UI** — modern, responsive in-game interfaces (Svelte, HTML, CSS, JS) |
-| <img src="https://api.iconify.design/tabler/database.svg?color=%233fb950" width="22" /> | **Database** — MySQL schema design & efficient queries with oxmysql |
-| <img src="https://api.iconify.design/tabler/bolt.svg?color=%23d29922" width="22" /> | **Optimization** — low resmon, lean threads, server tick performance |
-| <img src="https://api.iconify.design/tabler/shield-lock.svg?color=%23f85149" width="22" /> | **Security** — server-side validation, event protection |
+<img src="assets/what-i-do.svg" width="100%" alt="What I do" />
 
 > <img src="https://api.iconify.design/tabler/lock.svg?color=%238b949e" width="16" align="top" /> Most production projects are private.
 
@@ -47,7 +32,7 @@ local Katakorn = {
 
 <div align="center">
 
-<img src="https://skillicons.dev/icons?i=lua,js,svelte,html,css,nodejs,mysql,vite,git,github,vscode&theme=dark" />
+<img src="assets/tech-stack.svg" alt="Lua, JavaScript, Svelte, HTML, CSS, Node.js, MySQL, Vite, Git, GitHub, VS Code" />
 
 </div>
 
@@ -70,7 +55,7 @@ local Katakorn = {
 
 <div align="center">
 
-<img src="profile-3d-contrib/profile-night-rainbow.svg" width="100%" />
+<img src="profile-3d-contrib/profile-animated.svg" width="100%" />
 
 <img src="https://raw.githubusercontent.com/Katakorn/Katakorn/output/github-contribution-grid-snake-dark.svg" width="100%" />
 
@@ -84,4 +69,4 @@ local Katakorn = {
 
 </div>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:a371f7,50:1f6feb,100:0d1117&height=110&section=footer" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:a371f7,50:1f6feb,100:0d1117&height=110&section=footer&animation=twinkling" width="100%" />
