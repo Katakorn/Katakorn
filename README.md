@@ -24,17 +24,11 @@
 
 <img src="assets/what-i-do.svg" width="100%" alt="What I do" />
 
-> <img src="https://api.iconify.design/tabler/lock.svg?color=%238b949e" width="16" align="top" /> Most production projects are private.
-
 ---
 
 ### <img src="https://api.iconify.design/tabler/tools.svg?color=%2358a6ff" width="22" align="top" /> Tech Stack
 
-<div align="center">
-
-<img src="assets/tech-stack.svg" alt="Lua, JavaScript, Svelte, HTML, CSS, Node.js, MySQL, Vite, Git, GitHub, VS Code" />
-
-</div>
+<img src="assets/tech-stack.svg" width="100%" alt="Lua, JavaScript, TypeScript, Svelte, HTML, CSS, Node.js, MySQL, Vite, Git, GitHub, VS Code" />
 
 ---
 

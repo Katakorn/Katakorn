@@ -28,6 +28,7 @@ jobs:
           GH_USER: ${{ github.repository_owner }}
           OUT_DIR: assets
           EXCLUDE_LANGS: ""
+          MAX_LANGS: "0"   # 0 = list every language, no "+N other" row
         run: python3 .github/scripts/build_stats.py
 
       - name: Commit & Push

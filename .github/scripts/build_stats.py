@@ -5,6 +5,7 @@ Env:
   GH_USER        login to fall back to when the token cannot query `viewer`
   OUT_DIR        output directory (default: assets)
   EXCLUDE_LANGS  comma separated languages to hide from the language card
+  MAX_LANGS      rows on the language card before the rest collapse into "+N other" (0 = list every language)
 """
 import datetime as dt
 import html
@@ -21,7 +22,8 @@ BORDER = "#30363d"
 FG = "#e6edf3"
 MUTED = "#8b949e"
 MONO = "'JetBrains Mono','Cascadia Code',Consolas,Menlo,monospace"
-REDUCED = "@media (prefers-reduced-motion: reduce){*{animation:none!important}}"
+# reduced motion: jump every animation to its end state (animation:none would leave fade-ins invisible)
+REDUCED = "@media (prefers-reduced-motion: reduce){*{animation-duration:0s!important;animation-delay:0s!important}}"
 
 # ------------------------------------------------------------------ fetching
 def gql(token, query, variables=None):
@@ -343,11 +345,11 @@ text{{font-family:{MONO};font-variant-numeric:tabular-nums;fill:{FG}}}
 '''
 
 
-def langs_svg(s, exclude):
+def langs_svg(s, exclude, limit=0):
     langs = {k: v for k, v in s["langs"].items() if k.lower() not in exclude}
     total = sum(v["size"] for v in langs.values()) or 1
     ranked = sorted(langs.items(), key=lambda kv: -kv[1]["size"])
-    top, rest = ranked[:6], ranked[6:]
+    top, rest = (ranked[:limit], ranked[limit:]) if limit > 0 else (ranked, [])
     rows = [(n, v["size"], v["color"]) for n, v in top]
     if rest:
         rows.append((f"+{len(rest)} other", sum(v["size"] for _, v in rest), DIM))
@@ -371,8 +373,8 @@ def langs_svg(s, exclude):
         out.append(f'<g class="up" style="animation-delay:{0.15 + r * 0.07:.2f}s">'
                    f'<rect x="{PAD}" y="{cy - 4}" width="8" height="8" rx="1.5" fill="{color}"/>'
                    f'<text x="{PAD + 18}" y="{cy + 4.5}" class="{"name lead" if lead else "name"}">{esc(name.lower())}</text>'
-                   f'<text x="250" y="{cy + 4.5}" class="pct" text-anchor="end">{p:.1f}%</text>'
-                   f'<text x="{W - PAD}" y="{cy + 4.5}" class="kb" text-anchor="end">{size / 1024:,.0f}</text></g>')
+                   f'<text x="250" y="{cy + 4.5}" class="pct" text-anchor="end">{f"{p:.1f}%" if p >= 0.05 else "&lt;0.1%"}</text>'
+                   f'<text x="{W - PAD}" y="{cy + 4.5}" class="kb" text-anchor="end">{f"{size / 1024:,.0f}" if size >= 512 else "&lt;1"}</text></g>')
         for t in range(TN):
             x = TX + t * (TW + TG)
             on = t < lit
@@ -407,10 +409,11 @@ def main():
     out = pathlib.Path(os.environ.get("OUT_DIR", "assets"))
     out.mkdir(parents=True, exist_ok=True)
     exclude = {x.strip().lower() for x in os.environ.get("EXCLUDE_LANGS", "").split(",") if x.strip()}
+    limit = int(os.environ.get("MAX_LANGS", "0") or 0)
     s = fetch(token, os.environ.get("GH_USER", ""))
     st = streaks(s["days"])
     (out / "stats.svg").write_text(stats_svg(s, st), encoding="utf-8")
-    (out / "languages.svg").write_text(langs_svg(s, exclude), encoding="utf-8")
+    (out / "languages.svg").write_text(langs_svg(s, exclude, limit), encoding="utf-8")
     print(f"{s['login']}: {s['contributions']} contributions, {s['commits']} commits, "
           f"{len(s['langs'])} languages, streak {st['current']}/{st['longest']}")
 

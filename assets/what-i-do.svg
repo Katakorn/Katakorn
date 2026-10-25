@@ -1,49 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="840" height="264" viewBox="0 0 840 264">
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="296" viewBox="0 0 840 296">
 <style>
-.t{font:600 16px 'Segoe UI',Ubuntu,'Helvetica Neue',Arial,sans-serif;fill:#e6edf3}
-.d{font:400 13px 'Segoe UI',Ubuntu,'Helvetica Neue',Arial,sans-serif;fill:#8b949e}
-.card{opacity:0;animation:in .7s cubic-bezier(.2,.8,.2,1) forwards}
-@keyframes in{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
-.sweep{stroke-dasharray:18 82;stroke-dashoffset:100;animation:sweep 5s linear infinite}
-@keyframes sweep{to{stroke-dashoffset:0}}
-.ico{transform-box:fill-box;transform-origin:center;animation:pulse 3s ease-in-out infinite}
-@keyframes pulse{50%{transform:translate(27px,26px) scale(1.15)}0%,100%{transform:translate(27px,26px)}}
-@media (prefers-reduced-motion: reduce){*{animation:none!important}}
+text{font-family:'JetBrains Mono','Cascadia Code',Consolas,Menlo,monospace;font-variant-numeric:tabular-nums;fill:#e6edf3}
+.cap{font-size:10.5px;letter-spacing:.08em;fill:#6e7681}
+.sub{font-size:11px;fill:#6e7681}
+.name{font-size:13px;font-weight:600}
+.det{font-size:12px;fill:#8b949e}
+.tag{font-size:11px;letter-spacing:.04em;fill:#6e7681}
+.up{opacity:0;animation:up .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes up{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){*{animation-duration:0s!important;animation-delay:0s!important}}
 </style>
-<g transform="translate(0,2)"><g class="card" style="animation-delay:0.20s">
-<rect x="1" y="1" width="410" height="74" rx="12" fill="#161b22" stroke="#30363d"/>
-<rect class="sweep" x="1" y="1" width="410" height="74" rx="12" fill="none" stroke="#58a6ff" stroke-width="1.5" pathLength="100" style="animation-delay:1.20s"/>
-<rect x="18" y="17" width="42" height="42" rx="10" fill="#58a6ff" fill-opacity=".12"/>
-<g class="ico" style="color:#58a6ff;animation-delay:0.0s" transform="translate(27,26)"><svg width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 5h3.5a5 5 0 0 1 0 10H10l-4.015 4.227a2.3 2.3 0 0 1-3.923-2.035l1.634-8.173A5 5 0 0 1 8.6 5z"/><path d="m14 15l4.07 4.284a2.3 2.3 0 0 0 3.925-2.023l-1.6-8.232M8 9v2m-1-1h2m5 0h2"/></g></svg></g>
-<text x="76" y="34" class="t">FiveM Resources</text>
-<text x="76" y="56" class="d">client / server / shared, modular Lua architecture</text>
-</g></g><g transform="translate(428,2)"><g class="card" style="animation-delay:0.38s">
-<rect x="1" y="1" width="410" height="74" rx="12" fill="#161b22" stroke="#30363d"/>
-<rect class="sweep" x="1" y="1" width="410" height="74" rx="12" fill="none" stroke="#a371f7" stroke-width="1.5" pathLength="100" style="animation-delay:1.38s"/>
-<rect x="18" y="17" width="42" height="42" rx="10" fill="#a371f7" fill-opacity=".12"/>
-<g class="ico" style="color:#a371f7;animation-delay:0.4s" transform="translate(27,26)"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1m0 12h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1m10-4h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1m0-8h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1"/></svg></g>
-<text x="76" y="34" class="t">NUI / UI</text>
-<text x="76" y="56" class="d">modern in-game interfaces with Svelte, HTML, CSS, JS</text>
-</g></g><g transform="translate(0,94)"><g class="card" style="animation-delay:0.56s">
-<rect x="1" y="1" width="410" height="74" rx="12" fill="#161b22" stroke="#30363d"/>
-<rect class="sweep" x="1" y="1" width="410" height="74" rx="12" fill="none" stroke="#3fb950" stroke-width="1.5" pathLength="100" style="animation-delay:1.56s"/>
-<rect x="18" y="17" width="42" height="42" rx="10" fill="#3fb950" fill-opacity=".12"/>
-<g class="ico" style="color:#3fb950;animation-delay:0.8s" transform="translate(27,26)"><svg width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 6a8 3 0 1 0 16 0A8 3 0 1 0 4 6"/><path d="M4 6v6a8 3 0 0 0 16 0V6"/><path d="M4 12v6a8 3 0 0 0 16 0v-6"/></g></svg></g>
-<text x="76" y="34" class="t">Database</text>
-<text x="76" y="56" class="d">MySQL schema design &amp; efficient oxmysql queries</text>
-</g></g><g transform="translate(428,94)"><g class="card" style="animation-delay:0.74s">
-<rect x="1" y="1" width="410" height="74" rx="12" fill="#161b22" stroke="#30363d"/>
-<rect class="sweep" x="1" y="1" width="410" height="74" rx="12" fill="none" stroke="#d29922" stroke-width="1.5" pathLength="100" style="animation-delay:1.74s"/>
-<rect x="18" y="17" width="42" height="42" rx="10" fill="#d29922" fill-opacity=".12"/>
-<g class="ico" style="color:#d29922;animation-delay:1.2s" transform="translate(27,26)"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 3v7h6l-8 11v-7H5z"/></svg></g>
-<text x="76" y="34" class="t">Optimization</text>
-<text x="76" y="56" class="d">low resmon, lean threads, fast server ticks</text>
-</g></g><g transform="translate(0,186)"><g class="card" style="animation-delay:0.92s">
-<rect x="1" y="1" width="838" height="74" rx="12" fill="#161b22" stroke="#30363d"/>
-<rect class="sweep" x="1" y="1" width="838" height="74" rx="12" fill="none" stroke="#f85149" stroke-width="1.5" pathLength="100" style="animation-delay:1.92s"/>
-<rect x="18" y="17" width="42" height="42" rx="10" fill="#f85149" fill-opacity=".12"/>
-<g class="ico" style="color:#f85149;animation-delay:1.6s" transform="translate(27,26)"><svg width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 3a12 12 0 0 0 8.5 3A12 12 0 0 1 12 21A12 12 0 0 1 3.5 6A12 12 0 0 0 12 3"/><path d="M11 11a1 1 0 1 0 2 0a1 1 0 1 0-2 0m1 1v2.5"/></g></svg></g>
-<text x="76" y="34" class="t">Security</text>
-<text x="76" y="56" class="d">server-side validation &amp; event protection</text>
-</g></g>
+<rect x=".5" y=".5" width="839" height="295" rx="6" fill="#0d1117" stroke="#30363d"/><text x="24" y="25" class="cap"><tspan fill="#58a6ff">●</tspan>  KATAKORN / FOCUS</text><text x="816" y="25" class="cap" text-anchor="end">5 areas · what i build</text><line x1="0" x2="840" y1="40.5" y2="40.5" stroke="#21262d"/><text x="24" y="62" class="cap">AREA</text><text x="250" y="62" class="cap">DETAIL</text><text x="816" y="62" class="cap" text-anchor="end">TOOLS</text><rect x="1" y="76" width="838" height="36" fill="#161b22" fill-opacity=".55"/><g class="up" style="animation-delay:0.15s"><svg x="24" y="86.0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5h3.5a5 5 0 0 1 0 10H10l-4.015 4.227a2.3 2.3 0 0 1-3.923-2.035l1.634-8.173A5 5 0 0 1 8.6 5z"/><path d="m14 15l4.07 4.284a2.3 2.3 0 0 0 3.925-2.023l-1.6-8.232M8 9v2m-1-1h2m5 0h2"/></svg><text x="52" y="98.5" class="name">fivem resources</text><text x="250" y="98.5" class="det">client / server / shared, modular lua architecture</text><text x="816" y="98.5" class="tag" text-anchor="end">lua · esx · ox_lib</text></g><g class="up" style="animation-delay:0.23s"><svg x="24" y="122.0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a371f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1m0 12h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1m10-4h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1m0-8h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1"/></svg><text x="52" y="134.5" class="name">nui / ui</text><text x="250" y="134.5" class="det">in-game interfaces with svelte, html, css, js</text><text x="816" y="134.5" class="tag" text-anchor="end">svelte · vite · ts</text></g><rect x="1" y="148" width="838" height="36" fill="#161b22" fill-opacity=".55"/><g class="up" style="animation-delay:0.31s"><svg x="24" y="158.0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3fb950" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6a8 3 0 1 0 16 0A8 3 0 1 0 4 6"/><path d="M4 6v6a8 3 0 0 0 16 0V6"/><path d="M4 12v6a8 3 0 0 0 16 0v-6"/></svg><text x="52" y="170.5" class="name">database</text><text x="250" y="170.5" class="det">mysql schema design &amp; efficient oxmysql queries</text><text x="816" y="170.5" class="tag" text-anchor="end">mysql · oxmysql</text></g><g class="up" style="animation-delay:0.39s"><svg x="24" y="194.0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d29922" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3v7h6l-8 11v-7H5z"/></svg><text x="52" y="206.5" class="name">optimization</text><text x="250" y="206.5" class="det">low resmon, lean threads, fast server ticks</text><text x="816" y="206.5" class="tag" text-anchor="end">0.00ms target</text></g><rect x="1" y="220" width="838" height="36" fill="#161b22" fill-opacity=".55"/><g class="up" style="animation-delay:0.47s"><svg x="24" y="230.0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f85149" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a12 12 0 0 0 8.5 3A12 12 0 0 1 12 21A12 12 0 0 1 3.5 6A12 12 0 0 0 12 3"/><path d="M11 11a1 1 0 1 0 2 0a1 1 0 1 0-2 0m1 1v2.5"/></svg><text x="52" y="242.5" class="name">security</text><text x="250" y="242.5" class="det">server-side validation &amp; event protection</text><text x="816" y="242.5" class="tag" text-anchor="end">server authority</text></g><text x="24" y="282" class="sub">most production projects are private</text>
 </svg>
