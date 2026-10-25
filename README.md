@@ -72,8 +72,6 @@ local Katakorn = {
 
 <img src="profile-3d-contrib/profile-night-rainbow.svg" width="100%" />
 
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=Katakorn&theme=tokyo-night&bg_color=0d1117&hide_border=true&area=true&radius=8" width="100%" />
-
 <img src="https://raw.githubusercontent.com/Katakorn/Katakorn/output/github-contribution-grid-snake-dark.svg" width="100%" />
 
 </div>
