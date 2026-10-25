@@ -1,0 +1,40 @@
+name: Generate Stats
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/scripts/build_stats.py", ".github/workflows/stats.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-commit
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build stats cards
+        env:
+          # STATS_TOKEN (a PAT with repo + read:user) includes private repos; falls back to public only
+          GH_TOKEN: ${{ secrets.STATS_TOKEN || github.token }}
+          GH_USER: ${{ github.repository_owner }}
+          OUT_DIR: assets
+          EXCLUDE_LANGS: ""
+        run: python3 .github/scripts/build_stats.py
+
+      - name: Commit & Push
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add assets/stats.svg assets/languages.svg
+          git commit -m "chore: update stats" || exit 0
+          git pull --rebase
+          git push
